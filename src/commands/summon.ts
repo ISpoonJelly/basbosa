@@ -16,6 +16,6 @@ export class Summon extends Command {
     await player.getQueue(guild, interaction.channel!).connect(userVoiceChannel);
 
     console.log('[Summon] Joined', userVoiceChannel.id);
-    return this.reply(interaction, `Joined ${userVoiceChannel.name}`);
+    return this.reply(interaction, `Slamo 3leko ya **${userVoiceChannel.name}**`);
   }
 }

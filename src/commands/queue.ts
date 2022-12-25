@@ -22,7 +22,7 @@ export class Queue extends Command {
     const queueTracksString = queueTracks
       .slice(0, 10)
       .map((track, i) => {
-        return `${i + 1}) [${track.duration}]\` ${track.title} - <@${track.requestedBy.id}>`;
+        return `${i + 1}) [${track.duration}] ${track.title} - <@${track.requestedBy.id}>`;
       })
       .join('\n');
 
@@ -31,7 +31,7 @@ export class Queue extends Command {
     return interaction.reply({
       embeds: [
         new EmbedBuilder().setDescription(
-          `**Currently Playing:**\n\` ${currenctTrack.title} - <@${currenctTrack.requestedBy.id}>\n\n**Queue:**\n${queueTracksString}`,
+          `**Currently Playing:**\n ${currenctTrack.title} - <@${currenctTrack.requestedBy.id}>\n\n**Queue:**\n${queueTracksString}`,
         ),
       ],
     });

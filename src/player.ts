@@ -14,7 +14,7 @@ export class DPlayer {
 
     player.on('error', (_, error) => console.log('!!![Player] error', error));
     player.on('trackStart', (queue: Queue<any>, track: Track) => {
-      if (queue.metadata.channel) queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`);
+      if (queue.metadata.channel?.send) queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`);
     });
 
     this.player = player;

@@ -14,6 +14,6 @@ export class Disconnect extends Command {
 
     connection.destroy(true);
     console.log('[Disconnect] Disconnected successfully.');
-    return this.reply(interaction, 'Slamo 3leko');
+    return this.reply(interaction, 'Fe r3ayet ellah 👋');
   }
 }
