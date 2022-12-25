@@ -8,6 +8,7 @@ import {
   RESTPostAPIApplicationCommandsJSONBody,
   SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder,
+  VoiceBasedChannel,
 } from 'discord.js';
 
 import { DPlayer } from '../player';
@@ -39,7 +40,7 @@ export abstract class Command {
 
   public abstract handleInteraction(ctx: interactionContext): Promise<any>;
 
-  protected getInteractionMember(interaction: CommandInteraction): GuildMember {
+  protected getInteractionMember({ interaction }: interactionContext): GuildMember {
     const member = interaction.member;
     if (!member) {
       throw new Error();
@@ -48,13 +49,35 @@ export abstract class Command {
     return member as GuildMember;
   }
 
-  protected getInteractionGuild(interaction: CommandInteraction): Guild {
+  protected getMemberVoiceChannel(ctx: interactionContext): VoiceBasedChannel {
+    const userVoiceChannel = this.getInteractionMember(ctx).voice.channel;
+    if (!userVoiceChannel) {
+      throw Error('Ysta ed5ol ay qnaah');
+    }
+    return userVoiceChannel;
+  }
+
+  protected getInteractionGuild({ interaction }: interactionContext): Guild {
     const guild = interaction.guild;
     if (!guild) {
       throw new Error();
     }
 
     return guild;
+  }
+
+  protected getQueueInSameChannel(ctx: interactionContext) {
+    const { interaction, player } = ctx;
+    const userVoiceChannel = this.getMemberVoiceChannel(ctx);
+
+    const guild = this.getInteractionGuild(ctx);
+    const queue = player.getQueue(guild, interaction.channel!);
+
+    if (queue.connection && queue.connection.channel.id !== userVoiceChannel.id) {
+      throw Error('Ysta t3ala el channel bt3ty');
+    }
+
+    return queue;
   }
 
   public async replyError(

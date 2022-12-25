@@ -2,22 +2,17 @@ import { EmbedBuilder } from 'discord.js';
 import { Command, interactionContext } from './command';
 
 export class Queue extends Command {
-  public description = 'Displays the queue.';
+  public description = 'Shoof el mwgood';
 
   public async handleInteraction(ctx: interactionContext) {
-    const { interaction, player } = ctx;
-    const userVoiceChannel = this.getInteractionMember(interaction).voice.channel;
-    if (!userVoiceChannel) {
-      throw new Error('You are not connected to a voice channel.');
-    }
+    const queue = this.getQueueInSameChannel(ctx);
 
-    const guild = this.getInteractionGuild(interaction);
-    if (!player.isPlaying(guild, interaction.channel!)) {
-      return interaction.reply('Queue is empty.');
-    }
+    const currenctTrack = queue.current;
+    const queueTracks = queue.tracks;
 
-    const queueTracks = player.getQueue(guild, interaction.channel!).tracks;
-    const currenctTrack = player.getQueue(guild, interaction.channel!).current;
+    if (!queue.playing || queueTracks.length < 1) {
+      return ctx.interaction.reply('Queue is empty.');
+    }
 
     const queueTracksString = queueTracks
       .slice(0, 10)
@@ -28,7 +23,7 @@ export class Queue extends Command {
 
     console.log('[Queue] queue: ', queueTracks.length);
 
-    return interaction.reply({
+    return ctx.interaction.reply({
       embeds: [
         new EmbedBuilder().setDescription(
           `**Currently Playing:**\n ${currenctTrack.title} - <@${currenctTrack.requestedBy.id}>\n\n**Queue:**\n${queueTracksString}`,

@@ -1,19 +1,13 @@
 import { Command, interactionContext } from './command';
 
 export class Disconnect extends Command {
-  public description = 'Disconnects from a voice channel.';
+  public description = 'Salam ya zmeely';
 
-  public async handleInteraction({ interaction, player }: interactionContext) {
-    const guild = this.getInteractionGuild(interaction);
+  public async handleInteraction(ctx: interactionContext) {
+    const queue = this.getQueueInSameChannel(ctx);
+    queue.destroy(true);
 
-    const connection = player.getQueue(guild, interaction.channel!);
-    if (!connection) {
-      console.log('[Disconnect] Attempted disconnect while not in a voice channel');
-      throw new Error('I am not connected to a voice channel.');
-    }
-
-    connection.destroy(true);
     console.log('[Disconnect] Disconnected successfully.');
-    return this.reply(interaction, 'Fe r3ayet ellah 👋');
+    return this.reply(ctx.interaction, 'Fe r3ayet ellah 👋');
   }
 }

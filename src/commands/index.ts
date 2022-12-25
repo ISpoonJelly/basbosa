@@ -1,21 +1,25 @@
 import { ChatInputCommandInteraction, Client, REST, Routes } from 'discord.js';
 import { DPlayer } from '../player';
 
+import { Clear } from './clear';
 import { Command } from './command';
 import { Disconnect } from './disconnect';
+import { NowPlaying } from './nowplaying';
 import { Pause } from './pause';
 import { Ping } from './ping';
 import { Play } from './play';
 import { Playlist } from './playlist';
+import { Queue } from './queue';
 import { Resume } from './resume';
 import { Seek } from './seek';
 import { Skip } from './skip';
 import { Stop } from './stop';
 import { Summon } from './summon';
-import { Queue } from './queue';
 
 const commands: Command[] = [
+  new Clear(),
   new Disconnect(),
+  new NowPlaying(),
   new Pause(),
   new Ping(),
   new Play(),
@@ -45,6 +49,7 @@ export function registerInteractionCreate(discordClient: Client, player: DPlayer
       await command.handleInteraction({ interaction: interaction as ChatInputCommandInteraction, player });
     } catch (err: any) {
       console.log('[Command.handleInteraction] Error', err);
+      command.replyError(interaction, `Fe 7war: ${err.message}`);
     }
   });
 }
@@ -66,4 +71,4 @@ export async function registerSlashCommands(clientId: string, restClient: REST, 
     });
 }
 
-export { Disconnect, Pause, Ping, Play, Playlist, Resume, Seek, Skip, Stop, Summon, Queue };
+export { Clear, Disconnect, NowPlaying, Pause, Ping, Play, Playlist, Resume, Seek, Skip, Stop, Summon, Queue };

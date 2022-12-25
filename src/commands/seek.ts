@@ -1,8 +1,8 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { Command, interactionContext } from './command';
 
 export class Seek extends Command {
-  public description = 'Seeks the current playing track.';
+  public description = 'Mashyy fel track yaba';
 
   protected getSlackCommandBuilder() {
     const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;
@@ -10,33 +10,50 @@ export class Seek extends Command {
   }
 
   public async handleInteraction(ctx: interactionContext) {
-    const { interaction, player } = ctx;
-    const userVoiceChannel = this.getInteractionMember(interaction).voice.channel;
-    if (!userVoiceChannel) {
-      throw new Error('You are not connected to a voice channel.');
+    const queue = this.getQueueInSameChannel(ctx);
+    const position = this.getPositionFromInput(ctx.interaction);
+
+    if (position === -1) {
+      throw Error('Invalid position');
     }
 
-    const guild = this.getInteractionGuild(interaction);
-    const timeInput = interaction.options.getString('time', true);
-
-    let position: number;
-
-    const [hourMinutes, secondsStr] = timeInput.split('m');
-    const [hoursStr, minutesStr] = hourMinutes.split('h');
-
-    const hours = parseInt(hoursStr) || 0;
-    const minutes = parseInt(minutesStr) || 0;
-    const seconds = parseInt(secondsStr) || 0;
-
-    position = seconds * 1000 + minutes * 60 * 1000 + hours * 60 * 60 * 1000;
-
-    const fastForwarded = await player.seek(guild, interaction.channel!, position);
-    console.log('[Seek] seeked', position);
+    const fastForwarded = await queue.seek(position);
+    console.log('[Seek] seeked', position, fastForwarded);
 
     if (fastForwarded) {
-      return this.reply(interaction, '⏩');
+      return this.reply(ctx.interaction, '⏩');
     } else {
-      return this.reply(interaction, 'The player is not playing.');
+      return this.reply(ctx.interaction, 'The player is not playing.');
     }
   }
+
+  private getPositionFromInput(interaction: ChatInputCommandInteraction): number {
+    const timeInput = interaction.options.getString('time', true);
+
+    const secondsMatch = timeInput.match(/(\d*)s/g);
+    const minutesMatch = timeInput.match(/(\d*)m/g);
+    const hoursMatch = timeInput.match(/(\d*)h/g);
+
+    const hours = parseInt(matchOrEmpty(hoursMatch)) || 0;
+    const minutes = parseInt(matchOrEmpty(minutesMatch)) || 0;
+    let seconds = parseInt(matchOrEmpty(secondsMatch)) || 0;
+
+    if (!secondsMatch && !minutesMatch && !hoursMatch) {
+      if (/^\d+$/.test(timeInput)) {
+        seconds = parseInt(timeInput);
+      } else {
+        return -1;
+      }
+    }
+
+    return seconds * 1000 + minutes * 60 * 1000 + hours * 60 * 60 * 1000;
+  }
+}
+
+function matchOrEmpty(match: RegExpMatchArray | null): string {
+  if (!match) {
+    return '';
+  }
+
+  return match[0];
 }

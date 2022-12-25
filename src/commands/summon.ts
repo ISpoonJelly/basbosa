@@ -1,21 +1,24 @@
-import { GuildMember, VoiceChannel } from 'discord.js';
-
 import { Command, interactionContext } from './command';
 
 export class Summon extends Command {
-  public description = 'Summons the bot to the voice channel the user is connected to.';
+  public description = 'Agelak l7ad 3ndak.';
 
-  public async handleInteraction({ interaction, player }: interactionContext) {
-    const guild = this.getInteractionGuild(interaction);
-    const userVoiceChannel = this.getInteractionMember(interaction).voice.channel;
-    if (!userVoiceChannel) {
-      console.log('[Summon] User is summoning with no voice channel');
-      throw new Error('You need to be connected to a voice channel to summon me.');
+  public async handleInteraction(ctx: interactionContext) {
+    const { interaction, player } = ctx;
+    const userVoiceChannel = this.getMemberVoiceChannel(ctx);
+
+    const guild = this.getInteractionGuild(ctx);
+    const queue = player.getQueue(guild, interaction.channel!);
+
+    if (queue.connection) {
+      if (queue.connection.channel.id !== userVoiceChannel.id) {
+        throw Error(`Ysta t3ala **${queue.connection.channel.name}**`);
+      }
     }
 
-    await player.getQueue(guild, interaction.channel!).connect(userVoiceChannel);
+    await queue.connect(userVoiceChannel);
 
-    console.log('[Summon] Joined', userVoiceChannel.id);
+    console.log('[Summon] Joined', userVoiceChannel.name, userVoiceChannel.id);
     return this.reply(interaction, `Slamo 3leko ya **${userVoiceChannel.name}**`);
   }
 }

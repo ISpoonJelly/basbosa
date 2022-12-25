@@ -1,36 +1,31 @@
 import { QueryType, Queue, Track } from 'discord-player';
-import { ChatInputCommandInteraction, EmbedBuilder, InteractionReplyOptions, SlashCommandBuilder, Colors } from 'discord.js';
+import { Colors, EmbedBuilder, InteractionReplyOptions, SlashCommandBuilder } from 'discord.js';
 
 import { Command, interactionContext } from './command';
 
 export class Play extends Command {
-  public description = 'Plays a track.';
+  public description = 'Ngeblak w n7asbak';
 
   protected getSlackCommandBuilder() {
     const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;
     return builder
-      .addStringOption((option) => option.setName('query').setDescription('Search query').setRequired(true))
-      .addBooleanOption((option) => option.setName('next').setDescription('Play next'))
-      .addBooleanOption((option) => option.setName('now').setDescription('Play now'))
-      .addNumberOption((option) => option.setName('position').setDescription('Play at a specific queue position').setMinValue(1));
+      .addStringOption((option) => option.setName('query').setDescription('3yz tsma3 eh').setRequired(true))
+      .addBooleanOption((option) => option.setName('next').setDescription('7otaha next?'))
+      .addBooleanOption((option) => option.setName('now').setDescription('5osh beeha 3ltool?'))
+      .addNumberOption((option) => option.setName('position').setDescription('A7otahalak fain?').setMinValue(1));
   }
 
   public async handleInteraction(ctx: interactionContext) {
     const { interaction, player } = ctx;
-    const userVoiceChannel = this.getInteractionMember(interaction).voice.channel;
-    if (!userVoiceChannel) {
-      return interaction.reply({ ephemeral: true, content: 'Ysta ed5ol voice channel.' });
-    }
+    const userVoiceChannel = this.getMemberVoiceChannel(ctx);
 
-    const guild = this.getInteractionGuild(interaction);
+    const guild = this.getInteractionGuild(ctx);
     const queue = player.getQueue(guild, interaction.channel!);
 
     if (!queue.connection) {
       await queue.connect(userVoiceChannel);
-    } else {
-      if (queue.connection.channel.id !== userVoiceChannel.id) {
-        return interaction.reply({ ephemeral: true, content: 'Ysta t3ala el channel bt3ty.' });
-      }
+    } else if (queue.connection.channel.id !== userVoiceChannel.id) {
+      throw Error(`Ysta t3ala **${queue.connection.channel.name}**`);
     }
 
     await interaction.deferReply();

@@ -13,20 +13,15 @@ export class Playlist extends Command {
 
   public async handleInteraction(ctx: interactionContext) {
     const { interaction, player } = ctx;
-    const userVoiceChannel = this.getInteractionMember(interaction).voice.channel;
-    if (!userVoiceChannel) {
-      throw new Error('You are not connected to a voice channel.');
-    }
+    const userVoiceChannel = this.getMemberVoiceChannel(ctx);
 
-    const guild = this.getInteractionGuild(interaction);
+    const guild = this.getInteractionGuild(ctx);
     const queue = player.getQueue(guild, interaction.channel!);
 
     if (!queue.connection) {
       await queue.connect(userVoiceChannel);
-    } else {
-      if (queue.connection.channel.id !== userVoiceChannel.id) {
-        throw new Error('You are not in the same voice channel as me.');
-      }
+    } else if (queue.connection.channel.id !== userVoiceChannel.id) {
+      throw Error(`Ysta t3ala **${queue.connection.channel.name}**`);
     }
 
     await interaction.deferReply();
@@ -46,7 +41,7 @@ export class Playlist extends Command {
     });
 
     if (!searchResult || !searchResult.tracks || !searchResult.playlist) {
-      return { content: `❌ | Playlist **${playlistUrl}** not found!` };
+      return { content: `❌ | msh la2y Playlist [${playlistUrl}]` };
     }
     const { playlist, tracks } = searchResult;
 
