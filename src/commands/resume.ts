@@ -1,12 +1,12 @@
 import { Command, interactionContext } from './command';
 
 export class Resume extends Command {
-  public description = 'Resumes the player.';
+  public description = "mashy sha3'al";
 
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);
     const resumed = queue.setPaused(false);
-    console.log('[Resume] resumed', resumed);
+    console.log('[Resume] done', resumed);
 
     if (resumed) {
       return this.reply(ctx.interaction, '▶');

@@ -1,4 +1,5 @@
-import { EmbedBuilder } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
+import { Pagination } from 'pagination.djs';
 import { Command, interactionContext } from './command';
 
 export class Queue extends Command {
@@ -7,28 +8,27 @@ export class Queue extends Command {
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);
 
-    const currenctTrack = queue.current;
     const queueTracks = queue.tracks;
 
-    if (!queue.playing || queueTracks.length < 1) {
+    if (queueTracks.length < 1) {
       return ctx.interaction.reply('Queue is empty.');
     }
 
-    const queueTracksString = queueTracks
-      .slice(0, 10)
-      .map((track, i) => {
-        return `${i + 1}) [${track.duration}] ${track.title} - <@${track.requestedBy.id}>`;
-      })
-      .join('\n');
+    const pagination = new Pagination(ctx.interaction as ChatInputCommandInteraction<'cached'>, {
+      limit: 10,
+    });
+
+    let tracksString = queueTracks.map((track, i) => `${i + 1}) [${track.duration}] ${track.title} - <@${track.requestedBy.id}>`);
+    if (queue.playing) {
+      const currentTrack = queue.current;
+      const currentString = `**Currently Playing**: ${currentTrack.title} - <@${currentTrack.requestedBy.id}>\n`;
+      tracksString = [currentString, ...tracksString];
+    }
+
+    pagination.setDescriptions(tracksString);
 
     console.log('[Queue] queue: ', queueTracks.length);
 
-    return ctx.interaction.reply({
-      embeds: [
-        new EmbedBuilder().setDescription(
-          `**Currently Playing:**\n ${currenctTrack.title} - <@${currenctTrack.requestedBy.id}>\n\n**Queue:**\n${queueTracksString}`,
-        ),
-      ],
-    });
+    return pagination.render();
   }
 }

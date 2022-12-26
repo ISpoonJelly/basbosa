@@ -12,6 +12,7 @@ import { Playlist } from './playlist';
 import { Queue } from './queue';
 import { Resume } from './resume';
 import { Seek } from './seek';
+import { Shuffle } from './shuffle';
 import { Skip } from './skip';
 import { Stop } from './stop';
 import { Summon } from './summon';
@@ -26,6 +27,7 @@ const commands: Command[] = [
   new Playlist(),
   new Resume(),
   new Seek(),
+  new Shuffle(),
   new Skip(),
   new Stop(),
   new Summon(),
@@ -40,13 +42,13 @@ function getSlashCommands() {
 
 export function registerInteractionCreate(discordClient: Client, player: DPlayer) {
   discordClient.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand()) return;
+    if (!interaction.isChatInputCommand()) return;
 
     const command = commands.find((command) => command.name === interaction.commandName);
     if (!command) return;
 
     try {
-      await command.handleInteraction({ interaction: interaction as ChatInputCommandInteraction, player });
+      await command.handleInteraction({ interaction, player });
     } catch (err: any) {
       console.log('[Command.handleInteraction] Error', err);
       command.replyError(interaction, `Fe 7war: ${err.message}`);
@@ -71,4 +73,4 @@ export async function registerSlashCommands(clientId: string, restClient: REST, 
     });
 }
 
-export { Clear, Disconnect, NowPlaying, Pause, Ping, Play, Playlist, Resume, Seek, Skip, Stop, Summon, Queue };
+export { Clear, Disconnect, NowPlaying, Pause, Ping, Play, Playlist, Resume, Seek, Shuffle, Skip, Stop, Summon, Queue };

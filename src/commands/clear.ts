@@ -8,6 +8,6 @@ export class Clear extends Command {
 
     queue.clear();
     console.log('[Clear] queue cleared');
-    return this.reply(ctx.interaction, '❌');
+    return this.reply(ctx.interaction, '☑');
   }
 }

@@ -60,7 +60,7 @@ export class Play extends Command {
     } else {
       queue.addTrack(track);
     }
-    console.log('[Play] played: ', track.id, track.title, `next=${optionNext}`, `now=${optionNow}`, `position=${optionPosition}`);
+    console.log('[Play] played: ', track.id, track.title, `(next=${optionNext}`, `now=${optionNow}`, `position=${optionPosition})`);
 
     return this.getTrackEmbed(track, { optionNow, optionNext, optionPosition });
   }
