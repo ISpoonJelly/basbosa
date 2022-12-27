@@ -1,10 +1,10 @@
-import { QueryType, Queue, Track } from 'discord-player';
-import { ChatInputCommandInteraction, EmbedBuilder, InteractionReplyOptions, SlashCommandBuilder, Colors } from 'discord.js';
+import { QueryType, Queue } from 'discord-player';
+import { Colors, EmbedBuilder, InteractionReplyOptions, SlashCommandBuilder } from 'discord.js';
 
 import { Command, interactionContext } from './command';
 
 export class Playlist extends Command {
-  public description = 'Enqueues a playlist.';
+  public description = 'Shreet cocktail';
 
   protected getSlackCommandBuilder() {
     const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;

@@ -7,6 +7,10 @@ export class NowPlaying extends Command {
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);
 
+    if (!queue.playing) {
+      ctx.interaction.reply({ content: 'Nothing is playing', ephemeral: true });
+    }
+
     const currenctTrack = queue.current;
     const progress = queue.createProgressBar();
 

@@ -1,7 +1,7 @@
 import { Command, interactionContext } from './command';
 
 export class Pause extends Command {
-  public description = 'Awa2aflak.';
+  public description = 'Awa2aflak';
 
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);

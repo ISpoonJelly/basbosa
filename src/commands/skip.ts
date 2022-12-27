@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from 'discord.js';
 import { Command, interactionContext } from './command';
 
 export class Skip extends Command {
-  public description = 'Skips the currently playing song.';
+  public description = 'Mashyy el 5ara da';
 
   protected getSlackCommandBuilder() {
     const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;

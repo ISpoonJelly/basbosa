@@ -1,6 +1,5 @@
 import {
   ChatInputCommandInteraction,
-  CommandInteraction,
   Guild,
   GuildMember,
   InteractionResponse,
@@ -81,7 +80,7 @@ export abstract class Command {
   }
 
   public async replyError(
-    interaction: CommandInteraction,
+    interaction: ChatInputCommandInteraction,
     message: string = 'Unexpected Error Occured, try again',
   ): Promise<InteractionResponse | Message> {
     console.log('[Command.replyError]', message);
@@ -91,7 +90,7 @@ export abstract class Command {
     return this.reply(interaction, message, true);
   }
 
-  public async reply(interaction: CommandInteraction, message: string, ephemeral = false): Promise<InteractionResponse | Message> {
+  public async reply(interaction: ChatInputCommandInteraction, message: string, ephemeral = false): Promise<InteractionResponse | Message> {
     return interaction.reply({
       content: message,
       ephemeral,

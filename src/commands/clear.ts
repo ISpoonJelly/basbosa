@@ -1,7 +1,7 @@
 import { Command, interactionContext } from './command';
 
 export class Clear extends Command {
-  public description = 'Clears the queue.';
+  public description = 'Sheel y3m';
 
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);

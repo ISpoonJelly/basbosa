@@ -29,7 +29,6 @@ export class Play extends Command {
     }
 
     await interaction.deferReply();
-
     const response = await this.handleSearchCommand({ interaction, player }, queue);
     await interaction.followUp(response);
 

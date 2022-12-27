@@ -11,7 +11,7 @@ export class Queue extends Command {
     const queueTracks = queue.tracks;
 
     if (queueTracks.length < 1) {
-      return ctx.interaction.reply('Queue is empty.');
+      return ctx.interaction.reply({ content: 'Queue is empty.', ephemeral: true });
     }
 
     const pagination = new Pagination(ctx.interaction as ChatInputCommandInteraction<'cached'>, {

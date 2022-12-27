@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, REST, Routes } from 'discord.js';
+import { Client, REST, Routes } from 'discord.js';
 import { DPlayer } from '../player';
 
 import { Clear } from './clear';
@@ -51,7 +51,7 @@ export function registerInteractionCreate(discordClient: Client, player: DPlayer
       await command.handleInteraction({ interaction, player });
     } catch (err: any) {
       console.log('[Command.handleInteraction] Error', err);
-      command.replyError(interaction, `Fe 7war: ${err.message}`);
+      command.replyError(interaction, err.message);
     }
   });
 }

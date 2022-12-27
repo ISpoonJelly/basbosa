@@ -1,7 +1,7 @@
 import { Command, interactionContext } from './command';
 
 export class Summon extends Command {
-  public description = 'Agelak l7ad 3ndak.';
+  public description = 'Agelak l7ad 3ndak';
 
   public async handleInteraction(ctx: interactionContext) {
     const { interaction, player } = ctx;
