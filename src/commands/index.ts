@@ -57,17 +57,19 @@ export function registerInteractionCreate(discordClient: Client, player: DPlayer
 }
 
 export async function registerSlashCommands(clientId: string, restClient: REST, discordClient: Client) {
+  const isProd = process.env.NODE_ENV === 'production';
+  console.log('Registered slash commands. prod? ', isProd);
   const commandsBody = getSlashCommands();
 
   // Global, for prod
-  await restClient.put(Routes.applicationCommands(clientId), { body: [] });
+  await restClient.put(Routes.applicationCommands(clientId), { body: isProd ? commandsBody : [] });
 
   // Faster for testing
   discordClient.guilds.cache
     .map((guild) => guild.id)
     .forEach(async (guildId) => {
       await restClient.put(Routes.applicationGuildCommands(clientId, guildId), {
-        body: commandsBody,
+        body: isProd ? [] : commandsBody,
       });
       console.log(`Registered slash commands for ${guildId}.`);
     });
