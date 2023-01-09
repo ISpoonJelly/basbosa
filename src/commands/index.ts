@@ -1,6 +1,7 @@
 import { Client, REST, Routes } from 'discord.js';
 import { DPlayer } from '../player';
 
+import { Aaaah } from './aaaah';
 import { Clear } from './clear';
 import { Command } from './command';
 import { Disconnect } from './disconnect';
@@ -18,6 +19,7 @@ import { Stop } from './stop';
 import { Summon } from './summon';
 
 const commands: Command[] = [
+  new Aaaah(),
   new Clear(),
   new Disconnect(),
   new NowPlaying(),
@@ -75,4 +77,4 @@ export async function registerSlashCommands(clientId: string, restClient: REST, 
     });
 }
 
-export { Clear, Disconnect, NowPlaying, Pause, Ping, Play, Playlist, Resume, Seek, Shuffle, Skip, Stop, Summon, Queue };
+// export { Aaaah, Clear, Disconnect, NowPlaying, Pause, Ping, Play, Playlist, Resume, Seek, Shuffle, Skip, Stop, Summon, Queue };
