@@ -8,7 +8,7 @@ export class Summon extends Command {
     const userVoiceChannel = this.getMemberVoiceChannel(ctx);
 
     const guild = this.getInteractionGuild(ctx);
-    const queue = player.getQueue(guild, interaction.channel!);
+    const queue = player.getQueue(guild, interaction.channel!, true);
 
     if (queue.connection) {
       if (queue.connection.channel.id !== userVoiceChannel.id) {

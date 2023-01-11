@@ -20,9 +20,9 @@ export class DPlayer {
     this.player = player;
   }
 
-  getQueue(guild: Guild, channel: TextBasedChannel): Queue {
+  getQueue(guild: Guild, channel: TextBasedChannel, rebuild = false): Queue {
     let queue = this.player.getQueue(guild);
-    if (!queue) {
+    if (rebuild || !queue) {
       queue = this.player.createQueue(guild, {
         leaveOnEnd: false,
         leaveOnEmpty: false,
