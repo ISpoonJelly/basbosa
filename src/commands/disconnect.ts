@@ -10,7 +10,7 @@ export class Disconnect extends Command {
       throw Error('Atl3 mnain y3m?');
     }
 
-    queue.destroy(true);
+    queue.delete();
 
     console.log('[Disconnect] Disconnected successfully.');
     return this.reply(ctx.interaction, 'Fe r3ayet ellah 👋');

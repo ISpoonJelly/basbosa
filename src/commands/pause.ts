@@ -5,7 +5,7 @@ export class Pause extends Command {
 
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);
-    const paused = queue.setPaused(true);
+    const paused = queue.node.setPaused(true);
 
     console.log('[Pause] paused', paused);
     if (paused) {

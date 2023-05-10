@@ -8,7 +8,7 @@ export class Queue extends Command {
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);
 
-    const queueTracks = queue.tracks;
+    const queueTracks = queue.tracks.toArray();
 
     if (queueTracks.length < 1) {
       return ctx.interaction.reply({ content: 'Queue is empty.', ephemeral: true });
@@ -18,10 +18,10 @@ export class Queue extends Command {
       limit: 10,
     });
 
-    let tracksString = queueTracks.map((track, i) => `${i + 1}) [${track.duration}] ${track.title} - <@${track.requestedBy.id}>`);
-    if (queue.playing) {
-      const currentTrack = queue.current;
-      const currentString = `**Currently Playing**: ${currentTrack.title} - <@${currentTrack.requestedBy.id}>\n`;
+    let tracksString = queueTracks.map((track, i) => `${i + 1}) [${track.duration}] ${track.title} - <@${track.requestedBy?.id}>`);
+    if (queue.isPlaying() && queue.currentTrack) {
+      const currentTrack = queue.currentTrack;
+      const currentString = `**Currently Playing**: ${currentTrack.title} - <@${currentTrack.requestedBy?.id}>\n`;
       tracksString = [currentString, ...tracksString];
     }
 

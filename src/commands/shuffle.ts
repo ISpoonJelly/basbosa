@@ -6,7 +6,7 @@ export class Shuffle extends Command {
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);
 
-    queue.shuffle();
+    queue.tracks.shuffle();
 
     console.log('[Shuffle] done');
     return this.reply(ctx.interaction, '🔀');

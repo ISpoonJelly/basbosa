@@ -1,8 +1,11 @@
-import { Player, Queue, Track } from 'discord-player';
+import { Player, GuildQueue, Track } from 'discord-player';
 import { Client, Guild, TextBasedChannel } from 'discord.js';
 
+type QueueMetadata = { textChannel: TextBasedChannel }
+export type QueueType = GuildQueue<QueueMetadata>
+
 export class DPlayer {
-  public player: Player;
+  private player: Player;
 
   constructor(discordClient: Client) {
     const player = new Player(discordClient, {
@@ -12,54 +15,33 @@ export class DPlayer {
       },
     });
 
-    player.on('error', (_, error) => console.log('!!![Player] error', error));
-    player.on('trackStart', (queue: Queue<any>, track: Track) => {
+    player.extractors.loadDefault();
+
+    player.events.on('error', (error) => console.log('!!![Player] error', error));
+    player.events.on('playerStart', (queue: GuildQueue<any>, track: Track) => {
       if (queue.metadata.channel?.send) queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`);
     });
 
     this.player = player;
   }
 
-  getQueue(guild: Guild, channel: TextBasedChannel, rebuild = false): Queue {
-    let queue = this.player.getQueue(guild);
-    if (rebuild || !queue) {
-      queue = this.player.createQueue(guild, {
-        leaveOnEnd: false,
-        leaveOnEmpty: false,
-        leaveOnStop: false,
-        metadata: {
-          channel,
-        },
-      });
+  public getQueue(guild: Guild, textChannel: TextBasedChannel): GuildQueue<QueueMetadata> {
+    const existing = this.player.nodes.get<QueueMetadata>(guild)
+    if (existing) {
+      return existing
     }
 
-    return queue;
+    return this.player.nodes.create(guild, {
+      leaveOnEnd: false,
+      leaveOnEmpty: false,
+      leaveOnStop: false,
+      metadata: {
+        textChannel
+      }
+    })
   }
 
-  isPlaying(guild: Guild, channel: TextBasedChannel) {
-    const queue = this.getQueue(guild, channel);
-    return queue.connection && queue.playing;
-  }
-
-  skip(guild: Guild, channel: TextBasedChannel) {
-    if (this.isPlaying(guild, channel)) {
-      this.getQueue(guild, channel).skip();
-    }
-  }
-
-  stop(guild: Guild, channel: TextBasedChannel): void {
-    return this.getQueue(guild, channel).stop();
-  }
-
-  pause(guild: Guild, channel: TextBasedChannel): boolean {
-    return this.getQueue(guild, channel).setPaused(true);
-  }
-
-  resume(guild: Guild, channel: TextBasedChannel): boolean {
-    return this.getQueue(guild, channel).setPaused(false);
-  }
-
-  async seek(guild: Guild, channel: TextBasedChannel, position: number): Promise<boolean> {
-    return this.getQueue(guild, channel).seek(position);
+  public search(...args: Parameters<typeof this.player.search>) {
+    return this.player.search(...args)
   }
 }

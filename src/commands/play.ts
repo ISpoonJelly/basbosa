@@ -1,6 +1,7 @@
-import { QueryType, Queue, Track } from 'discord-player';
+import { QueryType, Track } from 'discord-player';
 import { Colors, EmbedBuilder, InteractionReplyOptions, SlashCommandBuilder } from 'discord.js';
 
+import { QueueType } from '../player';
 import { Command, interactionContext } from './command';
 
 export class Play extends Command {
@@ -17,31 +18,30 @@ export class Play extends Command {
 
   public async handleInteraction(ctx: interactionContext) {
     const { interaction, player } = ctx;
-    const userVoiceChannel = this.getMemberVoiceChannel(ctx);
-
-    const guild = this.getInteractionGuild(ctx);
-    const queue = player.getQueue(guild, interaction.channel!);
-
-    if (!queue.connection) {
-      await queue.connect(userVoiceChannel);
-    } else if (queue.connection.channel.id !== userVoiceChannel.id) {
-      throw Error(`Ysta t3ala **${queue.connection.channel.name}**`);
-    }
+    await this.connectToChannel(ctx)
 
     await interaction.deferReply();
-    const response = await this.handleSearchCommand({ interaction, player }, queue);
+
+    const queue = this.getQueueInSameChannel(ctx)
+    await queue.tasksQueue.acquire().getTask()
+
+    const response = await this.handleSearchCommand(ctx, queue);
     await interaction.followUp(response);
 
-    if (!queue.playing) await queue.play();
+    try {
+      if (!queue.isPlaying()) await queue.node.play();
+    } finally {
+      queue.tasksQueue.release()
+    }
   }
 
-  private async handleSearchCommand({ interaction, player }: interactionContext, queue: Queue): Promise<InteractionReplyOptions> {
+  private async handleSearchCommand({ interaction, player }: interactionContext, queue: QueueType): Promise<InteractionReplyOptions> {
     const songUrl = interaction.options.getString('query', true);
     const optionNext = interaction.options.getBoolean('next') || false;
     const optionNow = interaction.options.getBoolean('now') || false;
     const optionPosition = (interaction.options.getNumber('position') || 1) - 1;
 
-    const searchResult = await player.player.search(songUrl, {
+    const searchResult = await player.search(songUrl, {
       requestedBy: interaction.user,
       searchEngine: QueryType.AUTO,
     });
@@ -52,10 +52,11 @@ export class Play extends Command {
 
     const track = searchResult.tracks[0];
 
+
     if (optionNow) {
-      queue.play(track, { immediate: true });
+      queue.addTrack(track);
     } else if (optionNext || optionPosition) {
-      queue.insert(track, optionPosition);
+      queue.insertTrack(track, optionPosition);
     } else {
       queue.addTrack(track);
     }
@@ -80,7 +81,7 @@ export class Play extends Command {
     const embed = new EmbedBuilder()
       .setTitle(track.title)
       .setURL(track.url)
-      .setDescription(`${description} by <@${track.requestedBy.id}>`)
+      .setDescription(`${description} by <@${track.requestedBy?.id}>`)
       .setImage(track.thumbnail)
       .setFooter({ text: `Duration: ${track.duration}` })
       .setColor(Colors.DarkGreen)

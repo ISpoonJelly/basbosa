@@ -7,14 +7,17 @@ export class NowPlaying extends Command {
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);
 
-    if (!queue.playing) {
+    if (!queue.isPlaying()) {
       return ctx.interaction.reply({ content: 'Nothing is playing', ephemeral: true });
     }
 
-    const currenctTrack = queue.current;
-    const progress = queue.createProgressBar();
+    const currenctTrack = queue.currentTrack;
+    if (!currenctTrack) {
+      return ctx.interaction.reply({ content: 'Nothing is playing', ephemeral: true });
+    }
+    const progress = queue.node.createProgressBar();
 
-    console.log('[NowPlaying]', currenctTrack.title, currenctTrack.id);
+    console.log('[NowPlaying]', currenctTrack.title, currenctTrack?.id);
     return ctx.interaction.reply({
       embeds: [
         new EmbedBuilder()
@@ -22,7 +25,7 @@ export class NowPlaying extends Command {
           .setURL(currenctTrack.url)
           .setThumbnail(currenctTrack.thumbnail)
           .setAuthor({ name: currenctTrack.author })
-          .setFields([{ name: '‎', value: progress }]),
+          .setFields([{ name: '‎', value: progress || '' }]),
       ],
     });
   }

@@ -15,9 +15,9 @@ export class Skip extends Command {
     const position = ctx.interaction.options.getNumber('position');
 
     if (!position) {
-      queue.skip();
+      queue.node.skip();
     } else {
-      queue.skipTo(position - 1);
+      queue.node.skipTo(position - 1);
     }
 
     console.log('[Skip] skipped');

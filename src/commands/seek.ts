@@ -17,7 +17,7 @@ export class Seek extends Command {
       throw Error('Invalid position');
     }
 
-    const fastForwarded = await queue.seek(position);
+    const fastForwarded = await queue.node.seek(position);
     console.log('[Seek] seeked', position, fastForwarded);
 
     if (fastForwarded) {

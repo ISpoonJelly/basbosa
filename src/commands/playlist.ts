@@ -1,6 +1,7 @@
-import { QueryType, Queue } from 'discord-player';
+import { QueryType } from 'discord-player';
 import { Colors, EmbedBuilder, InteractionReplyOptions, SlashCommandBuilder } from 'discord.js';
 
+import { QueueType } from '../player';
 import { Command, interactionContext } from './command';
 
 export class Playlist extends Command {
@@ -13,29 +14,27 @@ export class Playlist extends Command {
 
   public async handleInteraction(ctx: interactionContext) {
     const { interaction, player } = ctx;
-    const userVoiceChannel = this.getMemberVoiceChannel(ctx);
 
-    const guild = this.getInteractionGuild(ctx);
-    const queue = player.getQueue(guild, interaction.channel!);
-
-    if (!queue.connection) {
-      await queue.connect(userVoiceChannel);
-    } else if (queue.connection.channel.id !== userVoiceChannel.id) {
-      throw Error(`Ysta t3ala **${queue.connection.channel.name}**`);
-    }
+    await this.connectToChannel(ctx)
 
     await interaction.deferReply();
+    const queue = this.getQueueInSameChannel(ctx)
+    await queue.tasksQueue.acquire().getTask()
 
-    const response = await this.handlePlaylistCommand({ interaction, player }, queue);
+    const response = await this.handlePlaylistCommand(ctx, queue);
     await interaction.followUp(response);
 
-    if (!queue.playing) await queue.play();
+    try {
+      if (!queue.isPlaying()) await queue.node.play();
+    } finally {
+      queue.tasksQueue.release()
+    }
   }
 
-  private async handlePlaylistCommand({ interaction, player }: interactionContext, queue: Queue): Promise<InteractionReplyOptions> {
+  private async handlePlaylistCommand({ interaction, player }: interactionContext, queue: QueueType): Promise<InteractionReplyOptions> {
     const playlistUrl = interaction.options.getString('url', true);
 
-    const searchResult = await player.player.search(playlistUrl, {
+    const searchResult = await player.search(playlistUrl, {
       requestedBy: interaction.user,
       searchEngine: QueryType.YOUTUBE_PLAYLIST,
     });
@@ -45,13 +44,13 @@ export class Playlist extends Command {
     }
     const { playlist, tracks } = searchResult;
 
-    await queue.addTracks(tracks);
+    await queue.addTrack(tracks);
     console.log('[Playlist] enqueued: ', playlist.id, playlist.title);
 
     const embed = new EmbedBuilder()
       .setTitle(`Playlist: [${playlist.title}]`)
       .setURL(playlist.url)
-      .setDescription(`Added by <@${tracks[0].requestedBy.id}>`)
+      .setDescription(`Added by <@${tracks[0].requestedBy?.id}>`)
       .setImage((playlist.thumbnail as any).url)
       .setFooter({ text: `Song count: ${tracks.length}` })
       .setColor(Colors.DarkGreen)

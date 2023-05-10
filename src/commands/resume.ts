@@ -5,7 +5,7 @@ export class Resume extends Command {
 
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);
-    const resumed = queue.setPaused(false);
+    const resumed = queue.node.setPaused(false);
     console.log('[Resume] done', resumed);
 
     if (resumed) {

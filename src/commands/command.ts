@@ -1,3 +1,4 @@
+import { useMasterPlayer } from 'discord-player';
 import {
   ChatInputCommandInteraction,
   Guild,
@@ -7,7 +8,8 @@ import {
   RESTPostAPIApplicationCommandsJSONBody,
   SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder,
-  VoiceBasedChannel,
+  TextBasedChannel,
+  VoiceBasedChannel
 } from 'discord.js';
 
 import { DPlayer } from '../player';
@@ -56,6 +58,15 @@ export abstract class Command {
     return userVoiceChannel;
   }
 
+  protected getInteractionTextChannel({ interaction }: interactionContext): TextBasedChannel {
+    const channel = interaction.channel;
+    if (!channel) {
+      throw new Error();
+    }
+
+    return channel;
+  }
+
   protected getInteractionGuild({ interaction }: interactionContext): Guild {
     const guild = interaction.guild;
     if (!guild) {
@@ -65,14 +76,42 @@ export abstract class Command {
     return guild;
   }
 
-  protected getQueueInSameChannel(ctx: interactionContext) {
-    const { interaction, player } = ctx;
+  public getPlayer() {
+    const player = useMasterPlayer()
+    if(!player) {
+      throw Error('Error getting player')
+    }
+
+    return player
+  }
+
+  public getQueue(ctx: interactionContext) {
+    const guild = this.getInteractionGuild(ctx as interactionContext);
+    const queue = ctx.player.getQueue(guild, this.getInteractionTextChannel(ctx))
+
+    if(!queue) {
+      throw Error('Error getting queue')
+    }
+
+    return queue
+  }
+
+  protected async connectToChannel(ctx: interactionContext) {
+    const queue = this.getQueue(ctx)
     const userVoiceChannel = this.getMemberVoiceChannel(ctx);
 
-    const guild = this.getInteractionGuild(ctx);
-    const queue = player.getQueue(guild, interaction.channel!);
+    if (!queue.channel) {
+      await queue.connect(userVoiceChannel);
+    } else if (queue.channel.id !== userVoiceChannel.id) {
+      throw Error(`Ysta t3ala **${queue.channel.name}**`);
+    }
+  }
 
-    if (queue.connection && queue.connection.channel.id !== userVoiceChannel.id) {
+  protected getQueueInSameChannel(ctx: interactionContext) {
+    const queue = this.getQueue(ctx)
+    const userVoiceChannel = this.getMemberVoiceChannel(ctx);
+
+    if (queue.channel && queue.channel.id !== userVoiceChannel.id) {
       throw Error('Ysta t3ala el channel bt3ty');
     }
 
@@ -82,9 +121,10 @@ export abstract class Command {
   public async replyError(
     interaction: ChatInputCommandInteraction,
     message: string = 'Unexpected Error Occured, try again',
+    followUp = false
   ): Promise<InteractionResponse | Message> {
     console.log('[Command.replyError]', message);
-    if (interaction.replied) {
+    if (interaction.replied || followUp) {
       return interaction.followUp({ content: message });
     }
     return this.reply(interaction, message, true);

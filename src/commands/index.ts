@@ -76,5 +76,3 @@ export async function registerSlashCommands(clientId: string, restClient: REST, 
       console.log(`Registered slash commands for ${guildId}.`);
     });
 }
-
-// export { Aaaah, Clear, Disconnect, NowPlaying, Pause, Ping, Play, Playlist, Resume, Seek, Shuffle, Skip, Stop, Summon, Queue };

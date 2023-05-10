@@ -6,7 +6,7 @@ export class Stop extends Command {
   public async handleInteraction(ctx: interactionContext) {
     const queue = this.getQueueInSameChannel(ctx);
 
-    queue.stop();
+    queue.delete();
     console.log('[Stop] done');
     return this.reply(ctx.interaction, '⏹');
   }
