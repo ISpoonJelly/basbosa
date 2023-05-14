@@ -19,7 +19,7 @@ export class DPlayer {
 
     player.events.on('error', (error) => console.log('!!![Player] error', error));
     player.events.on('playerStart', (queue: GuildQueue<any>, track: Track) => {
-      if (queue.metadata.channel?.send) queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`);
+      if (queue.metadata.textChannel?.send) queue.metadata.textChannel.send(`🎶 | Now playing **${track.title}**!`);
     });
 
     this.player = player;
