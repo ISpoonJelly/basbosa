@@ -32,9 +32,9 @@ export class DPlayer {
     }
 
     return this.player.nodes.create(guild, {
-      leaveOnEnd: false,
-      leaveOnEmpty: false,
-      leaveOnStop: false,
+      leaveOnEnd: true,
+      leaveOnEmpty: true,
+      leaveOnStop: true,
       metadata: {
         textChannel
       }
