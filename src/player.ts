@@ -7,6 +7,8 @@ export type QueueType = GuildQueue<QueueMetadata>
 export class DPlayer {
   private player: Player;
 
+  private readonly LEAVE_COOLDOWN = 5 * 60 * 1000
+
   constructor(discordClient: Client) {
     const player = new Player(discordClient, {
       ytdlOptions: {
@@ -31,10 +33,14 @@ export class DPlayer {
       return existing
     }
 
+
     return this.player.nodes.create(guild, {
       leaveOnEnd: true,
       leaveOnEmpty: true,
       leaveOnStop: true,
+      leaveOnEmptyCooldown: this.LEAVE_COOLDOWN,
+      leaveOnEndCooldown: this.LEAVE_COOLDOWN,
+      leaveOnStopCooldown: this.LEAVE_COOLDOWN,
       metadata: {
         textChannel
       }
