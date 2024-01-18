@@ -12,6 +12,7 @@ import { Play } from './play';
 import { Playlist } from './playlist';
 import { Queue } from './queue';
 import { Resume } from './resume';
+import { Santa } from './santa';
 import { Seek } from './seek';
 import { Shuffle } from './shuffle';
 import { Skip } from './skip';
@@ -28,6 +29,7 @@ const commands: Command[] = [
   new Play(),
   new Playlist(),
   new Resume(),
+  new Santa(),
   new Seek(),
   new Shuffle(),
   new Skip(),
