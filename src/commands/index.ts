@@ -18,11 +18,13 @@ import { Shuffle } from './shuffle';
 import { Skip } from './skip';
 import { Stop } from './stop';
 import { Summon } from './summon';
+import { Fanto } from './fanto';
 
 const commands: Command[] = [
   new Aaaah(),
   new Clear(),
   new Disconnect(),
+  new Fanto(),
   new NowPlaying(),
   new Pause(),
   new Ping(),

@@ -13,13 +13,13 @@ export class Playlist extends Command {
   }
 
   public async handleInteraction(ctx: interactionContext) {
-    const { interaction, player } = ctx;
+    const { interaction } = ctx;
 
-    await this.connectToChannel(ctx)
+    await this.connectToChannel(ctx);
 
     await interaction.deferReply();
-    const queue = this.getQueueInSameChannel(ctx)
-    await queue.tasksQueue.acquire().getTask()
+    const queue = this.getQueueInSameChannel(ctx);
+    await queue.tasksQueue.acquire().getTask();
 
     const response = await this.handlePlaylistCommand(ctx, queue);
     await interaction.followUp(response);
@@ -27,7 +27,7 @@ export class Playlist extends Command {
     try {
       if (!queue.isPlaying()) await queue.node.play();
     } finally {
-      queue.tasksQueue.release()
+      queue.tasksQueue.release();
     }
   }
 

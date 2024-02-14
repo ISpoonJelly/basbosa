@@ -2,10 +2,17 @@ import { QueryType } from 'discord-player';
 
 import { Command, interactionContext } from './command';
 
-const AAAH_URL = 'https://www.youtube.com/watch?v=ljWQpPUw3q4';
+const FANTO_URL = 'https://music.youtube.com/playlist?list=PLFjJ-GPUT9ZndpL9S-8irYD3Jjtb2k8mu&si=CMtUn1FigHn8sChf';
 
-export class Aaaah extends Command {
-  public description = 'AAAAH';
+function shuffleArray(unshuffled: any[]) {
+  return unshuffled
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+}
+
+export class Fanto extends Command {
+  public description = 'FANTO';
 
   public async handleInteraction(ctx: interactionContext) {
     const { interaction, player } = ctx;
@@ -16,17 +23,18 @@ export class Aaaah extends Command {
     const queue = this.getQueueInSameChannel(ctx);
     await queue.tasksQueue.acquire().getTask();
 
-    const result = await player.search(AAAH_URL, {
+    const result = await player.search(FANTO_URL, {
       requestedBy: interaction.user,
-      searchEngine: QueryType.YOUTUBE_VIDEO,
+      searchEngine: QueryType.YOUTUBE_PLAYLIST,
     });
 
-    if (!result || result.tracks.length !== 1) {
+    if (!result || !result.tracks || !result.playlist) {
       queue.tasksQueue.release();
       return interaction.followUp('msh mwgood :(');
     }
-    queue.addTrack(result.tracks[0]);
-    await interaction.followUp('AAAAH!');
+    const { playlist, tracks } = result;
+    await queue.addTrack(shuffleArray(tracks));
+    await interaction.followUp('FANTO!');
 
     try {
       if (!queue.isPlaying()) await queue.node.play();

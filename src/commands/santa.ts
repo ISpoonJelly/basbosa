@@ -9,12 +9,12 @@ export class Santa extends Command {
 
   public async handleInteraction(ctx: interactionContext) {
     const { interaction, player } = ctx;
-    await this.connectToChannel(ctx)
+    await this.connectToChannel(ctx);
 
     await interaction.deferReply({ ephemeral: true });
 
-    const queue = this.getQueueInSameChannel(ctx)
-    await queue.tasksQueue.acquire().getTask()
+    const queue = this.getQueueInSameChannel(ctx);
+    await queue.tasksQueue.acquire().getTask();
 
     const result = await player.search(SANTA_URL, {
       requestedBy: interaction.user,
@@ -22,16 +22,16 @@ export class Santa extends Command {
     });
 
     if (!result || result.tracks.length !== 1) {
-      queue.tasksQueue.release()
+      queue.tasksQueue.release();
       return interaction.followUp('msh mwgood :(');
     }
-      queue.addTrack(result.tracks[0]);
-      await interaction.followUp('SANTA!');
+    queue.addTrack(result.tracks[0]);
+    await interaction.followUp('SANTA!');
 
     try {
       if (!queue.isPlaying()) await queue.node.play();
     } finally {
-      queue.tasksQueue.release()
+      queue.tasksQueue.release();
     }
   }
 }
