@@ -1,15 +1,9 @@
 import { QueryType } from 'discord-player';
 
 import { Command, interactionContext } from './command';
+import { shuffleArray } from '../utils';
 
 const FANTO_URL = 'https://music.youtube.com/playlist?list=PLFjJ-GPUT9ZndpL9S-8irYD3Jjtb2k8mu&si=CMtUn1FigHn8sChf';
-
-function shuffleArray(unshuffled: any[]) {
-  return unshuffled
-    .map((value) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-}
 
 export class Fanto extends Command {
   public description = 'FANTO';
@@ -32,7 +26,7 @@ export class Fanto extends Command {
       queue.tasksQueue.release();
       return interaction.followUp('msh mwgood :(');
     }
-    const { playlist, tracks } = result;
+    const { tracks } = result;
     await queue.addTrack(shuffleArray(tracks));
     await interaction.followUp('FANTO!');
 
