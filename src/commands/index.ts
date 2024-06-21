@@ -1,7 +1,6 @@
 import { Client, REST, Routes } from 'discord.js';
 import { DPlayer } from '../player';
 
-import { Aaaah } from './aaaah';
 import { Clear } from './clear';
 import { Command } from './command';
 import { Disconnect } from './disconnect';
@@ -12,16 +11,15 @@ import { Play } from './play';
 import { Playlist } from './playlist';
 import { Queue } from './queue';
 import { Resume } from './resume';
-import { Santa } from './santa';
 import { Seek } from './seek';
 import { Shuffle } from './shuffle';
 import { Skip } from './skip';
 import { Stop } from './stop';
 import { Summon } from './summon';
 import { Fanto } from './fanto';
+import { Presets } from './preset';
 
 const commands: Command[] = [
-  new Aaaah(),
   new Clear(),
   new Disconnect(),
   new Fanto(),
@@ -30,8 +28,8 @@ const commands: Command[] = [
   new Ping(),
   new Play(),
   new Playlist(),
+  new Presets(),
   new Resume(),
-  new Santa(),
   new Seek(),
   new Shuffle(),
   new Skip(),
