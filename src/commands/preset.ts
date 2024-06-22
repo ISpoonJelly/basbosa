@@ -7,6 +7,7 @@ const presets = {
     'AAAAH': 'https://www.youtube.com/watch?v=ljWQpPUw3q4',
     'SANTA': 'https://www.youtube.com/watch?v=dq9-OUWTcpI',
     'MAGAL': 'https://www.youtube.com/watch?v=peOi2IL4XPs',
+    'SH7TA': 'https://www.youtube.com/watch?v=15VAMWokTf0',
 };
 
 export class Presets extends Command {
