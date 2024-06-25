@@ -1,17 +1,21 @@
 import { QueryType } from 'discord-player';
+import * as fs from 'fs';
+import * as path from 'path';
 
 import { Command, interactionContext } from './command';
 import { SlashCommandBuilder } from 'discord.js';
 
-const presets = {
-    'AAAAH': 'https://www.youtube.com/watch?v=ljWQpPUw3q4',
-    'SANTA': 'https://www.youtube.com/watch?v=dq9-OUWTcpI',
-    'MAGAL': 'https://www.youtube.com/watch?v=peOi2IL4XPs',
-    'SH7TA': 'https://www.youtube.com/watch?v=15VAMWokTf0',
-};
+const presetsFile = fs.readFileSync(path.resolve('./data/presets.data'), 'utf8');
 
 export class Presets extends Command {
   public description = 'mahroosh';
+
+  public static presets: string[][] = this.loadPresets()
+
+  public static loadPresets() {
+    const presetsFile = fs.readFileSync(path.resolve('./data/presets.data'), 'utf8');
+    return presetsFile.split('\n').map(l => l.split(';'))
+  }
 
   protected getSlackCommandBuilder() {
     const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;
@@ -19,7 +23,7 @@ export class Presets extends Command {
       .addStringOption((option) => option
         .setName('name')
         .setDescription('3yz tsma3 eh')
-        .addChoices(...Object.entries(presets).map(([k,v]) => ({ name: k, value: v })))
+        .addChoices(...Presets.presets.map(([k,v]) => ({ name: k, value: v })))
         .setRequired(true)
     )
   }

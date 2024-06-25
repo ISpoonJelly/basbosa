@@ -16,26 +16,28 @@ import { Shuffle } from './shuffle';
 import { Skip } from './skip';
 import { Stop } from './stop';
 import { Summon } from './summon';
-import { Fanto } from './fanto';
+import { Spezi } from './spezi';
 import { Presets } from './preset';
+import { Addpreset } from './addPreset';
 
 const commands: Command[] = [
+  new Addpreset(),
   new Clear(),
   new Disconnect(),
-  new Fanto(),
   new NowPlaying(),
   new Pause(),
   new Ping(),
   new Play(),
   new Playlist(),
   new Presets(),
+  new Queue(),
   new Resume(),
   new Seek(),
   new Shuffle(),
   new Skip(),
+  new Spezi(),
   new Stop(),
   new Summon(),
-  new Queue(),
 ];
 
 function getSlashCommands() {

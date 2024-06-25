@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc --build",
     "start": "node ./dist/app",
-    "dev": "ts-node src/app"
+    "dev": "ts-node src/app",
+    "init-presets": "cp ./data/presets.init ./data/presets.data"
   },
   "engines": {
     "node": ">=18",

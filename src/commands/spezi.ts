@@ -3,10 +3,10 @@ import { QueryType } from 'discord-player';
 import { Command, interactionContext } from './command';
 import { shuffleArray } from '../utils';
 
-const FANTO_URL = 'https://music.youtube.com/playlist?list=PLFjJ-GPUT9ZndpL9S-8irYD3Jjtb2k8mu&si=CMtUn1FigHn8sChf';
+const SPEZI_URL = 'https://music.youtube.com/playlist?list=PLFjJ-GPUT9ZndpL9S-8irYD3Jjtb2k8mu&si=CMtUn1FigHn8sChf';
 
-export class Fanto extends Command {
-  public description = 'FANTO';
+export class Spezi extends Command {
+  public description = 'SPEZI';
 
   public async handleInteraction(ctx: interactionContext) {
     const { interaction, player } = ctx;
@@ -17,7 +17,7 @@ export class Fanto extends Command {
     const queue = this.getQueueInSameChannel(ctx);
     await queue.tasksQueue.acquire().getTask();
 
-    const result = await player.search(FANTO_URL, {
+    const result = await player.search(SPEZI_URL, {
       requestedBy: interaction.user,
       searchEngine: QueryType.YOUTUBE_PLAYLIST,
     });
@@ -28,7 +28,7 @@ export class Fanto extends Command {
     }
     const { tracks } = result;
     await queue.addTrack(shuffleArray(tracks));
-    await interaction.followUp('FANTO!');
+    await interaction.followUp('SPEZI!');
 
     try {
       if (!queue.isPlaying()) await queue.node.play();
