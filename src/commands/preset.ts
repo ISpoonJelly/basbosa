@@ -3,9 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { Command, interactionContext } from './command';
-import { SlashCommandBuilder } from 'discord.js';
-
-const presetsFile = fs.readFileSync(path.resolve('./data/presets.data'), 'utf8');
+import { AutocompleteInteraction, SlashCommandBuilder } from 'discord.js';
 
 export class Presets extends Command {
   public description = 'mahroosh';
@@ -23,7 +21,7 @@ export class Presets extends Command {
       .addStringOption((option) => option
         .setName('name')
         .setDescription('3yz tsma3 eh')
-        .addChoices(...Presets.presets.map(([k,v]) => ({ name: k, value: v })))
+        .setAutocomplete(true)
         .setRequired(true)
     )
   }
@@ -56,5 +54,11 @@ export class Presets extends Command {
     } finally {
       queue.tasksQueue.release();
     }
+  }
+
+  public async handleAutoComplete({ interaction }: { interaction: AutocompleteInteraction }): Promise<any> {
+    const query = interaction.options.getFocused();
+    const filtered = Presets.presets.filter(([p]) => p.toLowerCase().startsWith(query.toLowerCase()));
+    await interaction.respond(filtered.map(([name, value]) => ({ name, value })))
   }
 }

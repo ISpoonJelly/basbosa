@@ -48,16 +48,25 @@ function getSlashCommands() {
 
 export function registerInteractionCreate(discordClient: Client, player: DPlayer) {
   discordClient.on('interactionCreate', async (interaction) => {
-    if (!interaction.isChatInputCommand()) return;
-
+    if (!interaction.isChatInputCommand() && !interaction.isAutocomplete()) return;
+    
     const command = commands.find((command) => command.name === interaction.commandName);
     if (!command) return;
 
-    try {
-      await command.handleInteraction({ interaction, player });
-    } catch (err: any) {
-      console.log('[Command.handleInteraction] Error', err);
-      command.replyError(interaction, err.message);
+    if(interaction.isChatInputCommand()) {
+      try {
+        await command.handleInteraction({ interaction, player });
+      } catch (err: any) {
+        console.log('[Command.handleInteraction] Error', err);
+        command.replyError(interaction, err.message);
+      }
+    } else if(interaction.isAutocomplete()) {
+      try {
+        await command.handleAutoComplete({ interaction });
+      } catch (err: any) {
+        console.log('[Command.handleAutoComplete] Error', err);
+        await interaction.respond([])
+      }
     }
   });
 }
@@ -70,9 +79,7 @@ export async function registerSlashCommands(clientId: string, restClient: REST, 
   if(isProd) {
     // Global, for prod
     await restClient.put(Routes.applicationCommands(clientId), { body: isProd ? commandsBody : [] });
-  }
-
-  if(!isProd) {
+  } else {
     // Faster for testing
     discordClient.guilds.cache
     .map((guild) => guild.id)

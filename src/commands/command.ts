@@ -1,5 +1,6 @@
 import { useMasterPlayer } from 'discord-player';
 import {
+  AutocompleteInteraction,
   ChatInputCommandInteraction,
   Guild,
   GuildMember,
@@ -40,6 +41,10 @@ export abstract class Command {
   }
 
   public abstract handleInteraction(ctx: interactionContext): Promise<any>;
+  
+  public async handleAutoComplete({ interaction }: { interaction: AutocompleteInteraction }): Promise<any> {
+    return interaction.respond([])
+  }
 
   protected getInteractionMember({ interaction }: interactionContext): GuildMember {
     const member = interaction.member;
