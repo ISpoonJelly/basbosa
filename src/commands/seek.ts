@@ -4,8 +4,8 @@ import { Command, interactionContext } from './command';
 export class Seek extends Command {
   public description = 'Mashyy fel track yaba';
 
-  protected getSlackCommandBuilder() {
-    const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;
+  protected getSlashCommandBuilder() {
+    const builder = super.getSlashCommandBuilder() as SlashCommandBuilder;
     return builder.addStringOption((option) => option.setName('time').setDescription('time to fast forward to.').setRequired(true));
   }
 

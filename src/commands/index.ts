@@ -42,7 +42,7 @@ const commands: Command[] = [
 
 function getSlashCommands() {
   return Object.values(commands)
-    .map((command) => command.slachCommands())
+    .map((command) => command.slashCommands())
     .flat();
 }
 
@@ -73,21 +73,23 @@ export function registerInteractionCreate(discordClient: Client, player: DPlayer
 
 export async function registerSlashCommands(clientId: string, restClient: REST, discordClient: Client) {
   const isProd = process.env.NODE_ENV === 'production';
-  console.log('Registered slash commands. prod? ', isProd);
   const commandsBody = getSlashCommands();
 
+  // Global, for prod
+  await restClient.put(Routes.applicationCommands(clientId), { body: isProd ? commandsBody : [] });
   if(isProd) {
-    // Global, for prod
-    await restClient.put(Routes.applicationCommands(clientId), { body: isProd ? commandsBody : [] });
-  } else {
-    // Faster for testing
-    discordClient.guilds.cache
-    .map((guild) => guild.id)
-    .forEach(async (guildId) => {
-      await restClient.put(Routes.applicationGuildCommands(clientId, guildId), {
-        body: isProd ? [] : commandsBody,
-      });
-      console.log(`Registered slash commands for ${guildId}.`);
-    });
+    console.log(`Registered global slash commands`)
   }
+
+  // Faster for testing
+  discordClient.guilds.cache
+  .map((guild) => guild.id)
+  .forEach(async (guildId) => {
+    await restClient.put(Routes.applicationGuildCommands(clientId, guildId), {
+      body: isProd ? [] : commandsBody,
+    });
+    if(!isProd) {
+      console.log(`Registered slash commands for ${guildId}.`);
+    }
+  });
 }

@@ -7,8 +7,8 @@ import { Command, interactionContext } from './command';
 export class Play extends Command {
   public description = 'Ngeblak w n7asbak';
 
-  protected getSlackCommandBuilder() {
-    const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;
+  protected getSlashCommandBuilder() {
+    const builder = super.getSlashCommandBuilder() as SlashCommandBuilder;
     return builder
       .addStringOption((option) => option.setName('query').setDescription('3yz tsma3 eh').setRequired(true))
       .addBooleanOption((option) => option.setName('next').setDescription('7otaha next?'))

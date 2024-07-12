@@ -1,4 +1,5 @@
 import { Player, GuildQueue, Track } from 'discord-player';
+import { YoutubeiExtractor } from "discord-player-youtubei"
 import { Client, Guild, TextBasedChannel } from 'discord.js';
 
 type QueueMetadata = { textChannel: TextBasedChannel }
@@ -17,7 +18,7 @@ export class DPlayer {
       },
     });
 
-    player.extractors.loadDefault();
+    player.extractors.register(YoutubeiExtractor, {});
 
     player.events.on('error', (error) => console.log('!!![Player] error', error));
     player.events.on('playerStart', (queue: GuildQueue<any>, track: Track) => {

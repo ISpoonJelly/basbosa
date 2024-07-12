@@ -15,8 +15,8 @@ export class Presets extends Command {
     return presetsFile.split('\n').map(l => l.split(';'))
   }
 
-  protected getSlackCommandBuilder() {
-    const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;
+  protected getSlashCommandBuilder() {
+    const builder = super.getSlashCommandBuilder() as SlashCommandBuilder;
     return builder
       .addStringOption((option) => option
         .setName('name')

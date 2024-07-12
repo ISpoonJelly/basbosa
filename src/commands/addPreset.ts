@@ -12,8 +12,8 @@ function isJelly(interaction: Interaction) {
 export class Addpreset extends Command {
   public description = '7ot ya basha';
 
-  protected getSlackCommandBuilder() {
-    const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;
+  protected getSlashCommandBuilder() {
+    const builder = super.getSlashCommandBuilder() as SlashCommandBuilder;
     return builder
     .addStringOption(option => option
         .setName('name')

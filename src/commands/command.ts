@@ -29,15 +29,15 @@ export abstract class Command {
     this.description = '';
   }
 
-  protected getSlackCommandBuilder():
+  protected getSlashCommandBuilder():
     | SlashCommandBuilder
     | SlashCommandSubcommandsOnlyBuilder
     | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'> {
     return new SlashCommandBuilder().setName(this.name).setDescription(this.description);
   }
 
-  public slachCommands(): RESTPostAPIApplicationCommandsJSONBody {
-    return this.getSlackCommandBuilder().toJSON();
+  public slashCommands(): RESTPostAPIApplicationCommandsJSONBody {
+    return this.getSlashCommandBuilder().toJSON();
   }
 
   public abstract handleInteraction(ctx: interactionContext): Promise<any>;

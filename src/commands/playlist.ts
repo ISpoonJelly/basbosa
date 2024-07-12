@@ -8,8 +8,8 @@ import { shuffleArray } from '../utils';
 export class Playlist extends Command {
   public description = 'Shreet cocktail';
 
-  protected getSlackCommandBuilder() {
-    const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;
+  protected getSlashCommandBuilder() {
+    const builder = super.getSlashCommandBuilder() as SlashCommandBuilder;
     return builder.addStringOption((option) => option.setName('url').setDescription('playlist url').setRequired(true))
       .addBooleanOption((option) => option.setName('shuffle').setDescription('shuffle playlist before playing').setRequired(false));
   }

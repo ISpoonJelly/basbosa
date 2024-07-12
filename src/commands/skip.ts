@@ -4,8 +4,8 @@ import { Command, interactionContext } from './command';
 export class Skip extends Command {
   public description = 'Mashyy el 5ara da';
 
-  protected getSlackCommandBuilder() {
-    const builder = super.getSlackCommandBuilder() as SlashCommandBuilder;
+  protected getSlashCommandBuilder() {
+    const builder = super.getSlashCommandBuilder() as SlashCommandBuilder;
     return builder.addNumberOption((option) => option.setName('position').setDescription('Skip lfain?').setMinValue(1));
   }
 
