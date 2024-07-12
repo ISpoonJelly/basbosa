@@ -9,7 +9,7 @@
     "init-presets": "cp ./data/presets.init ./data/presets.data"
   },
   "engines": {
-    "node": ">=20",
+    "node": ">=18",
     "npm": ">=10"
   },
   "repository": {
