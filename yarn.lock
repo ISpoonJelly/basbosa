@@ -14,10 +14,10 @@
   resolved "https://registry.yarnpkg.com/@discord-player/equalizer/-/equalizer-0.2.3.tgz#a5a00150479db71d28d85ed162cf4954341e325a"
   integrity sha512-71UAepYMbHTg2QQLXQAgyuXYHrgAYpJDxjg9dRWfTUNf+zfOAlyJEiRRk/WFhQyGu6m23iLR/H/JxgF4AW8Csg==
 
-"@discord-player/extractor@^4.4.7":
-  version "4.4.7"
-  resolved "https://registry.yarnpkg.com/@discord-player/extractor/-/extractor-4.4.7.tgz#dde75ce69e07f30b33958ba5e491da4a82d02bb4"
-  integrity sha512-XHG9Y45rQVWk3quf0IJqAj1ybTqiRgAy6vr5hnlaDZeaxXlsHRlDSzmSYl+teFVw2G9bjzR0jIvm8a4BW9hCBw==
+"@discord-player/extractor@^4.5.1":
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/@discord-player/extractor/-/extractor-4.5.1.tgz#fc2132dc1d1931107baae860cce1d140d20abd86"
+  integrity sha512-krsgdHD7sx4SWHKkIFDPcgYXR21EfleW0bjI6WvnJQbvTg9TZ4aYw77G6UVw/HaF7i3u3WuyGPZp1UqG0FRHaw==
   dependencies:
     file-type "^16.5.4"
     genius-lyrics "^4.4.6"
@@ -272,25 +272,24 @@ discord-api-types@^0.37.50:
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.37.92.tgz#e8c4823ed278ef2060a4e793f28218b203335fc6"
   integrity sha512-7xnedbQRLRef/O+4jKPyIFwl6YqoyihOG3OSneiRmVJMBk30ph2YuZGcHjeX1Kk/a3yQWeyCKe4RZJB3iECcxg==
 
-discord-player-youtubei@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/discord-player-youtubei/-/discord-player-youtubei-1.1.5.tgz#98c44081d69212fe7da4961212e2124c0ed1bb44"
-  integrity sha512-PmkY0Og9KO/zOt04v8iLxY/Saw8oeJlUEbgoR1sc2K+6E0F9l+ZUg0wXfHyClbcW5omZ0LvDMhIxBchBLKqRTA==
+discord-player-youtubei@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/discord-player-youtubei/-/discord-player-youtubei-1.3.1.tgz#823c0192995eae3f932740bf96b14fb9e2a881c0"
+  integrity sha512-0JtWAux1SKBMG543PktNKrsydBLBarOvPn9dsu1xNfXQYbUSglOZgGRjcKxK6MgGj5MluSEer5QXE/UJYseIJg==
   dependencies:
-    undici "^6.19.2"
-    youtubei.js "^10.1.0"
+    tiny-typed-emitter "^2.1.0"
+    youtubei.js "^10.4.0"
 
-discord-player@^6.6.10:
-  version "6.6.10"
-  resolved "https://registry.yarnpkg.com/discord-player/-/discord-player-6.6.10.tgz#88eac7fa45bcde8ed9ccd5feaaf1c3f2f92dc360"
-  integrity sha512-AOZnJYXOoe2hF2OENwKUIaKJ2H5U8VfxcoMKDXE++9Rnbzd7qD8MQr9Am01T1UiiPf2BWjyHin97EUm1nrTJKA==
+discord-player@^6.7.1:
+  version "6.7.1"
+  resolved "https://registry.yarnpkg.com/discord-player/-/discord-player-6.7.1.tgz#9e703a1e42da8a28a3aafed102191640f4290a4f"
+  integrity sha512-ScQmChpZebpVzs+RMsSkCXSORUIXUR3aHsEssGZSLKrbWnregt3jVc39emftTt6EfarZ2TvTK262mXeAYPzpcQ==
   dependencies:
     "@discord-player/equalizer" "^0.2.3"
     "@discord-player/ffmpeg" "^0.1.0"
     "@discord-player/utils" "^0.2.2"
     "@web-scrobbler/metadata-filter" "^3.1.0"
     discord-voip "^0.1.3"
-    ip "^2.0.1"
     libsodium-wrappers "^0.7.13"
 
 discord-voip@^0.1.3:
@@ -432,11 +431,6 @@ inherits@^2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-ip@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/ip/-/ip-2.0.1.tgz#e8f3595d33a3ea66490204234b77636965307105"
-  integrity sha512-lJUL9imLTNi1ZfXT+DU6rBBdbiKGBuay9B6xGSPVjUeQwaH1RIGqef8RZkUtHioLmSNpPR5M4HVKJGm1j8FWVQ==
-
 isomorphic-unfetch@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/isomorphic-unfetch/-/isomorphic-unfetch-4.0.2.tgz#5fc04eeb1053b7b702278e2cf7a3f246cb3a9214"
@@ -445,10 +439,10 @@ isomorphic-unfetch@^4.0.2:
     node-fetch "^3.2.0"
     unfetch "^5.0.0"
 
-jintr@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/jintr/-/jintr-2.0.0.tgz#bc8e78efc04743f5c67c625587ce4d1c94afad9a"
-  integrity sha512-RiVlevxttZ4eHEYB2dXKXDXluzHfRuw0DJQGsYuKCc5IvZj5/GbOakeqVX+Bar/G9kTty9xDJREcxukurkmYLA==
+jintr@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/jintr/-/jintr-2.1.1.tgz#84d555df06d26128c2a1d0e1eebd6fecdf8eb280"
+  integrity sha512-89cwX4ouogeDGOBsEVsVYsnWWvWjchmwXBB4kiBhmjOKw19FiOKhNhMhpxhTlK2ctl7DS+d/ethfmuBpzoNNgA==
   dependencies:
     acorn "^8.8.0"
 
@@ -677,6 +671,11 @@ strtok3@^7.0.0:
     "@tokenizer/token" "^0.3.0"
     peek-readable "^5.0.0"
 
+tiny-typed-emitter@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tiny-typed-emitter/-/tiny-typed-emitter-2.1.0.tgz#b3b027fdd389ff81a152c8e847ee2f5be9fad7b5"
+  integrity sha512-qVtvMxeXbVej0cQWKqVSSAHmKZEHAvxdF8HEUBFWts8h+xEo5m/lEiPakuyZ3BnCBjOD8i24kzNOiOLLgsSxhA==
+
 token-types@^4.1.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/token-types/-/token-types-4.2.1.tgz#0f897f03665846982806e138977dbe72d44df753"
@@ -756,7 +755,7 @@ undici@^5.22.0:
   dependencies:
     busboy "^1.6.0"
 
-undici@^6.11.1, undici@^6.15.0, undici@^6.17.0, undici@^6.19.2:
+undici@^6.11.1, undici@^6.15.0, undici@^6.17.0:
   version "6.19.2"
   resolved "https://registry.yarnpkg.com/undici/-/undici-6.19.2.tgz#231bc5de78d0dafb6260cf454b294576c2f3cd31"
   integrity sha512-JfjKqIauur3Q6biAtHJ564e3bWa8VvT+7cSiOJHFbX4Erv6CLGDpg8z+Fmg/1OI/47RA+GI2QZaF48SSaLvyBA==
@@ -816,11 +815,11 @@ youtube-sr@^4.3.9:
   resolved "https://registry.yarnpkg.com/youtube-sr/-/youtube-sr-4.3.11.tgz#626663ba03c9a81edf82bd03541234ca59073a6c"
   integrity sha512-3oHiS2x7PpMiDRW7Cq8nz1bkAIBOJHoOwkPl/oncM/+A9/3xxMDgMLGW2dsBEP1DHFyRXYTVABgfbdwHF8sXXQ==
 
-youtubei.js@^10.1.0:
-  version "10.1.0"
-  resolved "https://registry.yarnpkg.com/youtubei.js/-/youtubei.js-10.1.0.tgz#38b3d95907441040df1e8031e04e0e6200ed52cf"
-  integrity sha512-MokZMAnpWH11VYvWuW6qjPiiPmgRl5rfDgPQOpif9qXcVHoVw1hi8ePuRSD0AZSZ+uvWGe8rvas2dzp+Jv5JKQ==
+youtubei.js@^10.4.0:
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/youtubei.js/-/youtubei.js-10.4.0.tgz#5c13ecdab7241960cb63533cb2bac274ddc3105a"
+  integrity sha512-FZahkkg5ROyH/FgJ4czy/xDNkqHbJTCUQzumQlnR+2Q7m6HaWghAFWWJUTcexemGuu7t/5EuyQz98eBgKQRMog==
   dependencies:
-    jintr "^2.0.0"
+    jintr "^2.1.1"
     tslib "^2.5.0"
     undici "^5.19.1"
